@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rakhwal Technologies — Managed SOC, Incident Response & Identity Security</title>
+<meta name="description" content="Rakhwal Technologies delivers 24/7 managed security operations, sub-1-hour incident response, and identity security for companies that cannot afford a breach. India-based. Globally trusted."/>
+<meta name="robots" content="index, follow"/>
+<meta property="og:title" content="Rakhwal Technologies — Managed Security Operations"/>
+<meta property="og:description" content="24/7 SOC. 1-hour IR SLA. NIST · MITRE ATT&CK · ISO 27001 aligned. India-based, globally trusted."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&family=Karla:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:#08090d;color:#dedad4;font-family:'Karla',sans-serif;font-weight:400;line-height:1.75;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+ul{list-style:none}
+img{max-width:100%}
+
+:root{
+  --red:#C1121F;
+  --red-dim:rgba(193,18,31,0.12);
+  --red-bright:#e0141f;
+  --bg:#08090d;
+  --bg2:#0c0d13;
+  --bg3:#101218;
+  --bg4:#14161e;
+  --white:#F2EEE8;
+  --body:#dedad4;
+  --muted:#7e7a74;
+  --faint:#3a3834;
+  --border:rgba(255,255,255,0.06);
+  --border-hi:rgba(255,255,255,0.1);
+  --border-red:rgba(193,18,31,0.3);
+  --mono:'Share Tech Mono',monospace;
+  --display:'Teko',sans-serif;
+  --sans:'Karla',sans-serif;
+}
+
+/* ─── PAGE SYSTEM ─── */
+.page{display:none;min-height:100vh}
+.page.active{display:block}
+
+/* ─── NOISE ─── */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.55}
+
+/* ─── GRID ─── */
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(193,18,31,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(193,18,31,0.035) 1px,transparent 1px);background-size:72px 72px;pointer-events:none;z-index:0;animation:gridBreath 10s ease-in-out infinite}
+@keyframes gridBreath{0%,100%{opacity:1}50%{opacity:0.45}}
+
+/* ─── SCAN LINE ─── */
+.scan-line{position:fixed;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(193,18,31,0.5) 40%,rgba(193,18,31,0.8) 50%,rgba(193,18,31,0.5) 60%,transparent 100%);pointer-events:none;z-index:9998;animation:scanDown 5s linear infinite;opacity:0.6}
+@keyframes scanDown{0%{top:0;opacity:0}5%{opacity:0.6}95%{opacity:0.6}100%{top:100vh;opacity:0}}
+
+/* ─── CURSOR GLOW ─── */
+.cursor-glow{position:fixed;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(193,18,31,0.055) 0%,transparent 70%);pointer-events:none;z-index:1;transform:translate(-50%,-50%);transition:opacity 0.4s;opacity:0;will-change:transform}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:800;
+  height:70px;padding:0 3rem;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(8,9,13,0.9);backdrop-filter:blur(32px) saturate(1.5);
+  border-bottom:1px solid var(--border);
+  transition:border-color 0.4s,box-shadow 0.4s;
+}
+nav.scrolled{border-bottom-color:var(--border-red);box-shadow:0 2px 32px rgba(193,18,31,0.12)}
+.nav-logo{display:flex;align-items:center;gap:12px;cursor:pointer}
+.nav-logo-icon{width:38px;height:38px;flex-shrink:0;transition:transform 0.35s,filter 0.35s}
+.nav-logo:hover .nav-logo-icon{transform:scale(1.1);filter:drop-shadow(0 0 6px rgba(193,18,31,0.6))}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1}
+.nav-logo-name{font-family:var(--display);font-weight:700;font-size:1.5rem;letter-spacing:0.1em;color:var(--white);line-height:1}
+.nav-logo-sub{font-family:var(--mono);font-size:0.5rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.nav-links{display:flex;align-items:center}
+.nav-link{font-family:var(--mono);font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.6rem 1.3rem;color:var(--muted);transition:color 0.25s;position:relative}
+.nav-link::after{content:'';position:absolute;bottom:0;left:1.3rem;right:1.3rem;height:1px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform 0.35s cubic-bezier(.4,0,.2,1)}
+.nav-link:hover,.nav-link.active{color:var(--white)}
+.nav-link:hover::after,.nav-link.active::after{transform:scaleX(1)}
+.nav-cta{font-family:var(--mono);font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.6rem 1.5rem;margin-left:1rem;border:1px solid var(--red);color:var(--red);transition:all 0.28s;position:relative;overflow:hidden}
+.nav-cta::before{content:'';position:absolute;inset:0;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform 0.28s cubic-bezier(.4,0,.2,1);z-index:-1}
+.nav-cta:hover{color:var(--white)}
+.nav-cta:hover::before{transform:scaleX(1)}
+.nav-burger{display:none;flex-direction:column;gap:5px;padding:6px;cursor:pointer}
+.nav-burger span{display:block;width:20px;height:1.5px;background:var(--muted);transition:all 0.3s}
+.mobile-menu{display:none;position:fixed;top:70px;left:0;right:0;background:rgba(8,9,13,0.99);backdrop-filter:blur(24px);border-bottom:1px solid var(--border-red);padding:1.5rem 2rem;z-index:799;flex-direction:column}
+.mobile-menu.open{display:flex}
+.mobile-link{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;padding:1.1rem 0;color:var(--muted);border-bottom:1px solid var(--border);transition:color 0.2s,padding-left 0.25s}
+.mobile-link:hover,.mobile-link.active{color:var(--red);padding-left:0.6rem}
+
+/* ─── HERO ─── */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 3rem 80px;overflow:hidden}
+.hero-glow{position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 48% 28%,rgba(193,18,31,0.1) 0%,transparent 68%);animation:heroPulse 7s ease-in-out infinite;pointer-events:none}
+@keyframes heroPulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.hero-vline{position:absolute;top:0;left:50%;width:1px;height:100%;background:linear-gradient(to bottom,transparent 0%,rgba(193,18,31,0.18) 40%,rgba(193,18,31,0.18) 60%,transparent 100%);pointer-events:none}
+
+/* IR ALERT BANNER */
+.ir-banner{
+  position:absolute;top:90px;right:3rem;z-index:10;
+  display:flex;align-items:center;gap:12px;
+  background:rgba(193,18,31,0.1);border:1px solid var(--border-red);
+  padding:0.65rem 1.2rem;
+  animation:fadeIn 1.2s 1.5s ease both;
+}
+.ir-dot{width:7px;height:7px;border-radius:50%;background:#ef4444;flex-shrink:0;animation:irBlink 1.4s infinite}
+@keyframes irBlink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(239,68,68,0.6)}50%{opacity:0.4;box-shadow:0 0 0 5px rgba(239,68,68,0)}}
+.ir-text{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--white)}
+.ir-text span{color:#ef4444}
+
+.hero-inner{max-width:1240px;margin:0 auto;width:100%;position:relative;z-index:1}
+
+.hero-label{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);margin-bottom:2rem;display:flex;align-items:center;gap:16px;animation:fadeUp 0.8s 0.1s ease both}
+.hero-label::before{content:'';display:block;width:0;height:1px;background:var(--red);animation:lineGrow 0.8s 0.8s ease forwards}
+@keyframes lineGrow{to{width:40px}}
+
+.hero-h1{font-family:var(--display);font-weight:700;font-size:clamp(3.8rem,8vw,7.2rem);line-height:0.93;letter-spacing:0.02em;text-transform:uppercase;margin-bottom:0;color:var(--white)}
+.hero-h1 .l1{display:block;animation:wordIn 0.65s 0.2s ease both;overflow:hidden}
+.hero-h1 .l2{display:block;color:var(--red);animation:wordIn 0.65s 0.38s ease both;overflow:hidden}
+.hero-h1 .l3{display:block;font-size:0.62em;color:rgba(242,238,232,0.22);letter-spacing:0.06em;animation:wordIn 0.65s 0.56s ease both;overflow:hidden;margin-bottom:2rem}
+@keyframes wordIn{from{opacity:0;transform:translateY(72px)}to{opacity:1;transform:translateY(0)}}
+
+/* HERO VALUE PROPS — the 5-second read */
+.hero-props{
+  display:flex;flex-direction:column;gap:0.55rem;margin-bottom:2.8rem;
+  animation:fadeUp 0.7s 0.75s ease both;
+  max-width:600px;
+}
+.hero-prop{
+  display:flex;align-items:flex-start;gap:12px;
+  font-size:1.1rem;color:var(--body);line-height:1.5;
+}
+.hero-prop::before{content:'';display:block;width:5px;height:5px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:9px}
+
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;animation:fadeUp 0.7s 0.9s ease both;margin-bottom:4rem}
+
+/* BUTTONS */
+.btn-primary{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;padding:1rem 2.4rem;background:var(--red);color:var(--white);transition:all 0.28s;display:inline-flex;align-items:center;gap:10px;position:relative;overflow:hidden}
+.btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent);transform:translateX(-100%);transition:transform 0.5s}
+.btn-primary:hover{background:var(--red-bright);transform:translateY(-2px);box-shadow:0 8px 28px rgba(193,18,31,0.38)}
+.btn-primary:hover::after{transform:translateX(100%)}
+.btn-outline{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;padding:1rem 2.4rem;border:1px solid rgba(255,255,255,0.12);color:var(--body);transition:all 0.28s}
+.btn-outline:hover{border-color:var(--red);color:var(--white);transform:translateY(-2px)}
+.btn-red-outline{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.8rem 1.8rem;border:1px solid var(--border-red);color:var(--red);transition:all 0.28s;display:inline-flex;align-items:center;gap:8px}
+.btn-red-outline:hover{background:var(--red-dim);transform:translateY(-1px)}
+
+/* HERO STATS */
+.hero-stats{display:flex;gap:0;border-top:1px solid var(--border);padding-top:0;flex-wrap:wrap;animation:fadeUp 0.7s 1.05s ease both}
+.stat-item{padding:2rem 3rem 0 0;border-right:1px solid var(--border);margin-right:3rem}
+.stat-item:last-child{border-right:none;margin-right:0}
+.stat-num{font-family:var(--display);font-size:3.2rem;font-weight:700;color:var(--white);line-height:1;letter-spacing:0.04em}
+.stat-num span{color:var(--red)}
+.stat-lbl{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.14em;color:var(--body);margin-top:6px;text-transform:uppercase;line-height:1.55}
+
+/* ─── TICKER ─── */
+.ticker{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0.85rem 0;overflow:hidden;position:relative;z-index:1}
+.ticker::before,.ticker::after{content:'';position:absolute;top:0;bottom:0;width:100px;z-index:2;pointer-events:none}
+.ticker::before{left:0;background:linear-gradient(90deg,var(--bg2),transparent)}
+.ticker::after{right:0;background:linear-gradient(-90deg,var(--bg2),transparent)}
+.ticker-track{display:flex;white-space:nowrap;animation:tickerRun 30s linear infinite}
+.ticker-track:hover{animation-play-state:paused}
+.t-item{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--body);padding:0 2.5rem;display:inline-flex;align-items:center;gap:1.8rem;flex-shrink:0;transition:color 0.2s}
+.t-item:hover{color:var(--white)}
+.t-dot{width:4px;height:4px;border-radius:50%;background:var(--red);flex-shrink:0;animation:dotPulse 2.2s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 0 0 rgba(193,18,31,0.5);transform:scale(1)}50%{box-shadow:0 0 0 5px rgba(193,18,31,0);transform:scale(1.3)}}
+@keyframes tickerRun{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ─── SECTION SYSTEM ─── */
+section{position:relative;z-index:1}
+.wrap{max-width:1240px;margin:0 auto;padding:0 3rem}
+.section-pad{padding-top:7rem;padding-bottom:7rem}
+.section-pad-sm{padding-top:4.5rem;padding-bottom:4.5rem}
+
+.eyebrow{font-family:var(--mono);font-size:0.64rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);margin-bottom:1.3rem;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:'';width:22px;height:1px;background:var(--red);flex-shrink:0}
+
+.h2{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(2.4rem,4.2vw,3.6rem);letter-spacing:0.04em;line-height:0.97;color:var(--white);margin-bottom:1.2rem}
+.h2 .red{color:var(--red)}
+.lead{color:var(--body);font-size:1.08rem;max-width:520px;line-height:1.9;margin-bottom:3.5rem}
+
+/* ─── THREAT INTEL BAR ─── */
+.threat-bar{background:var(--bg3);border-bottom:1px solid var(--border)}
+.threat-inner{max-width:1240px;margin:0 auto;padding:1.4rem 3rem;display:flex;align-items:center;gap:3rem;flex-wrap:wrap}
+.threat-label{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);flex-shrink:0;display:flex;align-items:center;gap:8px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:livePulse 2s infinite}
+@keyframes livePulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,0.5)}50%{opacity:0.6;box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+.threat-items{display:flex;gap:2.5rem;flex-wrap:wrap}
+.threat-item{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.1em;color:var(--muted);display:flex;align-items:center;gap:8px}
+.threat-item strong{color:var(--body)}
+.threat-sep{color:var(--faint)}
+
+/* ─── WHY ─── */
+.why-section{background:var(--bg2)}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+.why-card{padding:3.5rem 2.8rem;border-right:1px solid var(--border);position:relative;overflow:hidden;transition:background 0.4s;cursor:default}
+.why-card:last-child{border-right:none}
+.why-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform 0.5s cubic-bezier(.4,0,.2,1)}
+.why-card::after{content:'';position:absolute;bottom:0;left:0;right:0;top:0;background:radial-gradient(ellipse 100% 80% at 50% 110%,rgba(193,18,31,0.06) 0%,transparent 70%);opacity:0;transition:opacity 0.4s}
+.why-card:hover{background:rgba(193,18,31,0.035)}
+.why-card:hover::before{transform:scaleX(1)}
+.why-card:hover::after{opacity:1}
+.why-tag{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.18em;color:var(--red);margin-bottom:1.5rem;opacity:0.85}
+.why-title{font-family:var(--display);font-weight:700;font-size:1.7rem;text-transform:uppercase;letter-spacing:0.04em;line-height:1.0;color:var(--white);margin-bottom:1rem}
+.why-body{color:var(--body);font-size:1rem;line-height:1.9}
+
+/* ─── SERVICES PAGE ─── */
+.page-hero{padding:148px 3rem 72px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% -10%,rgba(193,18,31,0.09) 0%,transparent 70%);pointer-events:none}
+.page-hero-inner{max-width:1240px;margin:0 auto;position:relative;z-index:1}
+
+.svc-block{border-bottom:1px solid var(--border);background:var(--bg);transition:background 0.3s;position:relative}
+.svc-block::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--red);transform:scaleY(0);transform-origin:top;transition:transform 0.45s cubic-bezier(.4,0,.2,1)}
+.svc-block:hover::before,.svc-block.open::before{transform:scaleY(1)}
+.svc-block:hover,.svc-block.open{background:rgba(193,18,31,0.018)}
+
+.svc-header{display:grid;grid-template-columns:72px 1fr auto;gap:2rem;align-items:start;padding:3.2rem 3rem;cursor:pointer;max-width:1240px;margin:0 auto;transition:padding-left 0.3s}
+.svc-block:hover .svc-header{padding-left:3.6rem}
+.svc-num{font-family:var(--mono);font-size:0.62rem;color:var(--red);letter-spacing:0.16em;padding-top:7px}
+.svc-name{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(1.8rem,2.8vw,2.5rem);letter-spacing:0.04em;line-height:0.97;color:var(--white);margin-bottom:0.5rem}
+.svc-tag{color:var(--body);font-size:0.98rem}
+.svc-toggle{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.12em;color:var(--muted);padding:0.5rem 1rem;border:1px solid var(--border);transition:all 0.25s;white-space:nowrap;align-self:center}
+.svc-block:hover .svc-toggle,.svc-block.open .svc-toggle{border-color:var(--border-red);color:var(--red)}
+
+.svc-body{display:none;max-width:1240px;margin:0 auto;padding:0 3rem 3.5rem;padding-left:calc(72px + 2rem + 3rem)}
+.svc-body.open{display:grid;grid-template-columns:1fr 1fr;gap:4rem;animation:bodyOpen 0.4s ease both}
+@keyframes bodyOpen{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
+.svc-desc{color:var(--body);font-size:1.02rem;line-height:1.95;margin-bottom:2rem}
+
+/* SLA BADGE */
+.sla-badge{display:inline-flex;align-items:center;gap:8px;background:var(--red-dim);border:1px solid var(--border-red);padding:0.5rem 1rem;margin-bottom:2rem;font-family:var(--mono);font-size:0.62rem;letter-spacing:0.12em;color:var(--red);text-transform:uppercase}
+
+.dl-label{font-family:var(--mono);font-size:0.6rem;color:var(--red);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:1.1rem}
+.dl-list{display:flex;flex-direction:column;gap:0.75rem}
+.dl-list li{font-size:1rem;color:var(--body);display:flex;align-items:flex-start;gap:10px;line-height:1.65}
+.dl-list li::before{content:'→';color:var(--red);font-family:var(--mono);font-size:0.7rem;flex-shrink:0;margin-top:4px}
+.dl-list li{opacity:0;transform:translateX(-8px);transition:opacity 0.4s,transform 0.4s}
+.svc-body.open .dl-list li:nth-child(1){opacity:1;transform:none;transition-delay:0.08s}
+.svc-body.open .dl-list li:nth-child(2){opacity:1;transform:none;transition-delay:0.16s}
+.svc-body.open .dl-list li:nth-child(3){opacity:1;transform:none;transition-delay:0.24s}
+.svc-body.open .dl-list li:nth-child(4){opacity:1;transform:none;transition-delay:0.32s}
+.svc-body.open .dl-list li:nth-child(5){opacity:1;transform:none;transition-delay:0.40s}
+.svc-body.open .dl-list li:nth-child(6){opacity:1;transform:none;transition-delay:0.48s}
+.svc-body.open .dl-list li:nth-child(7){opacity:1;transform:none;transition-delay:0.56s}
+
+.tools-panel{background:var(--bg3);border:1px solid var(--border);padding:2rem;position:relative;overflow:hidden}
+.tools-panel::before{content:'PLATFORMS & TOOLS';position:absolute;top:-0.55rem;left:1.4rem;font-family:var(--mono);font-size:0.5rem;letter-spacing:0.18em;color:var(--red);background:var(--bg3);padding:0 0.6rem}
+.tools-panel::after{content:'';position:absolute;top:0;right:0;width:80px;height:80px;background:radial-gradient(circle at top right,rgba(193,18,31,0.07) 0%,transparent 70%)}
+.chips{display:flex;flex-wrap:wrap;gap:0.45rem;margin-bottom:1.4rem}
+.chip{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.06em;padding:0.32rem 0.85rem;border:1px solid var(--border);color:var(--body);background:rgba(255,255,255,0.018);transition:all 0.22s;cursor:default}
+.chip:hover{border-color:var(--border-red);color:var(--white);background:rgba(193,18,31,0.07);transform:translateY(-1px)}
+.eng-type{padding-top:1.2rem;border-top:1px solid var(--border);font-family:var(--mono);font-size:0.66rem;color:var(--muted);letter-spacing:0.08em}
+.eng-type strong{color:var(--white)}
+
+/* ─── TRUST STRIP ─── */
+.trust-strip{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.trust-inner{max-width:1240px;margin:0 auto;padding:3.5rem 3rem;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.trust-item{padding:0 2.5rem;border-right:1px solid var(--border);text-align:center;transition:background 0.3s}
+.trust-item:last-child{border-right:none}
+.trust-item:hover{background:rgba(193,18,31,0.025)}
+.trust-lbl{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.18em;color:var(--muted);text-transform:uppercase;margin-bottom:0.6rem}
+.trust-val{font-family:var(--mono);font-size:0.72rem;color:var(--body);letter-spacing:0.06em;transition:color 0.3s}
+.trust-item:hover .trust-val{color:var(--white)}
+
+/* ─── INDUSTRIES ─── */
+.industries-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border)}
+.ind-item{padding:2.2rem 2.5rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);transition:background 0.3s;cursor:default;position:relative;overflow:hidden}
+.ind-item:nth-child(3n){border-right:none}
+.ind-item:nth-last-child(-n+3){border-bottom:none}
+.ind-item::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform 0.4s}
+.ind-item:hover{background:rgba(193,18,31,0.03)}
+.ind-item:hover::after{transform:scaleX(1)}
+.ind-icon{font-family:var(--mono);font-size:0.58rem;color:var(--red);letter-spacing:0.16em;margin-bottom:0.8rem}
+.ind-name{font-family:var(--display);font-weight:600;font-size:1.35rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--white);margin-bottom:0.4rem}
+.ind-detail{color:var(--muted);font-size:0.88rem;line-height:1.7}
+
+/* ─── ABOUT ─── */
+.about-split{display:grid;grid-template-columns:1fr 1.15fr;gap:8rem;align-items:center}
+.about-big{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(3rem,5vw,4.8rem);letter-spacing:0.04em;line-height:0.95;color:var(--white)}
+.about-big .r{color:var(--red)}
+.about-copy{color:var(--body);font-size:1.02rem;line-height:1.95}
+.about-copy p{margin-bottom:1.4rem}
+.about-copy p:last-child{margin-bottom:0}
+
+.vals-grid{display:grid;grid-template-columns:repeat(2,1fr)}
+.val-item{padding:3.5rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;overflow:hidden;transition:background 0.4s}
+.val-item:nth-child(2n){border-right:none}
+.val-item:nth-child(3),.val-item:nth-child(4){border-bottom:none}
+.val-item::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform 0.5s cubic-bezier(.4,0,.2,1)}
+.val-item:hover{background:rgba(193,18,31,0.03)}
+.val-item:hover::after{transform:scaleX(1)}
+.val-tag{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.18em;color:var(--red);margin-bottom:1.3rem}
+.val-title{font-family:var(--display);font-weight:700;font-size:1.55rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--white);margin-bottom:0.8rem;line-height:1.0}
+.val-body{color:var(--body);font-size:1rem;line-height:1.9}
+
+.method-row{display:grid;grid-template-columns:repeat(5,1fr);margin-top:3rem}
+.method-step{padding:2.8rem 1.8rem;border-right:1px solid var(--border);position:relative;overflow:hidden;transition:background 0.3s}
+.method-step:last-child{border-right:none}
+.method-step:hover{background:rgba(193,18,31,0.03)}
+.m-num{width:46px;height:46px;border-radius:50%;border:1px solid var(--border-red);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;font-family:var(--mono);font-size:0.68rem;color:var(--red);transition:all 0.3s}
+.method-step:hover .m-num{background:var(--red);color:var(--white);border-color:var(--red);transform:scale(1.08);box-shadow:0 0 18px rgba(193,18,31,0.4)}
+.m-name{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:1.3rem;letter-spacing:0.04em;color:var(--white);margin-bottom:0.7rem}
+.m-desc{color:var(--body);font-size:0.93rem;line-height:1.85}
+
+.fw-row{display:flex;flex-wrap:wrap;gap:0.7rem;margin-top:2rem}
+.fw-chip{font-family:var(--mono);font-size:0.64rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.52rem 1.2rem;border:1px solid var(--border);color:var(--body);transition:all 0.22s;cursor:default}
+.fw-chip:hover{border-color:var(--border-red);color:var(--white);background:rgba(193,18,31,0.07);transform:translateY(-2px)}
+
+/* ─── CTA BAND ─── */
+.cta-band{background:var(--bg3);border-top:1px solid var(--border)}
+.cta-inner{max-width:1240px;margin:0 auto;padding:7rem 3rem;display:grid;grid-template-columns:1fr auto;gap:5rem;align-items:center}
+.cta-h{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(2rem,3.5vw,3rem);line-height:1.0;letter-spacing:0.04em;color:var(--white)}
+.cta-h .r{color:var(--red)}
+.cta-sub{color:var(--body);font-size:1rem;max-width:440px;line-height:1.9;margin-top:1.2rem}
+.cta-btns{display:flex;flex-direction:column;gap:1rem;align-items:flex-start}
+
+/* ─── CONTACT ─── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;max-width:1240px;margin:0 auto}
+.con-left{padding:5rem 3rem;border-right:1px solid var(--border)}
+.con-right{padding:5rem 3rem}
+.email-block{margin-top:2.8rem;padding:2.2rem;border:1px solid var(--border-red);background:rgba(193,18,31,0.07);position:relative;overflow:hidden;transition:box-shadow 0.3s}
+.email-block:hover{box-shadow:0 0 32px rgba(193,18,31,0.14)}
+.email-block::before{content:'SECURE CHANNEL — CONFIDENTIAL';font-family:var(--mono);font-size:0.5rem;letter-spacing:0.18em;color:var(--red);position:absolute;top:0.8rem;right:1rem}
+.email-lbl{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.16em;color:var(--muted);text-transform:uppercase;margin-bottom:0.8rem}
+.email-addr{font-family:var(--display);font-weight:700;font-size:2rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--white);display:block;margin-bottom:0.9rem;transition:color 0.25s}
+.email-addr:hover{color:var(--red)}
+.email-note{font-size:0.94rem;color:var(--body);line-height:1.7}
+.con-details{margin-top:2.5rem;display:flex;flex-direction:column}
+.con-row{display:flex;gap:1.5rem;padding:1.2rem 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.con-row:last-child{border-bottom:none}
+.con-key{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.14em;color:var(--red);text-transform:uppercase;min-width:88px;padding-top:2px;flex-shrink:0}
+.con-val{font-size:0.97rem;color:var(--body);line-height:1.65}
+.eng-title{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:1.85rem;letter-spacing:0.04em;color:var(--white);margin-bottom:2rem}
+.eng-steps{display:flex;flex-direction:column}
+.eng-step{display:flex;gap:1.5rem;padding:1.8rem 0;border-bottom:1px solid var(--border);align-items:flex-start;transition:padding-left 0.3s,background 0.3s}
+.eng-step:last-child{border-bottom:none}
+.eng-step:hover{padding-left:0.6rem;background:rgba(193,18,31,0.02)}
+.eng-n{width:36px;height:36px;border-radius:50%;border:1px solid var(--border-red);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.62rem;color:var(--red);flex-shrink:0;transition:all 0.3s}
+.eng-step:hover .eng-n{background:var(--red);color:var(--white);border-color:var(--red)}
+.eng-sname{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:1.25rem;letter-spacing:0.04em;color:var(--white);margin-bottom:0.4rem}
+.eng-desc{color:var(--body);font-size:0.95rem;line-height:1.8}
+.disc-box{border:1px solid var(--border);padding:2.5rem;position:relative;max-width:800px;background:var(--bg2);transition:border-color 0.3s}
+.disc-box:hover{border-color:var(--border-red)}
+.disc-box::before{content:'RESPONSIBLE DISCLOSURE POLICY';font-family:var(--mono);font-size:0.5rem;letter-spacing:0.18em;color:var(--red);position:absolute;top:-0.52rem;left:1.4rem;background:var(--bg2);padding:0 0.6rem}
+.disc-box p{color:var(--body);font-size:0.97rem;line-height:1.95;margin-bottom:1rem}
+.disc-box p:last-child{margin-bottom:0}
+
+/* ─── FOOTER ─── */
+footer{background:var(--bg);border-top:1px solid var(--border);position:relative;z-index:1}
+.foot-top{max-width:1240px;margin:0 auto;padding:5rem 3rem 3rem;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem}
+.foot-name{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:1.65rem;letter-spacing:0.08em;color:var(--white);margin-bottom:0.4rem}
+.foot-sub{font-family:var(--mono);font-size:0.5rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-bottom:1.2rem}
+.foot-about{color:var(--muted);font-size:0.92rem;line-height:1.85;max-width:260px}
+.foot-col-h{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);margin-bottom:1.2rem}
+.foot-links{display:flex;flex-direction:column;gap:0.7rem}
+.foot-link{color:var(--muted);font-size:0.93rem;cursor:pointer;transition:color 0.2s,padding-left 0.22s}
+.foot-link:hover{color:var(--white);padding-left:0.4rem}
+.foot-bottom{max-width:1240px;margin:0 auto;padding:1.5rem 3rem 2.5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;border-top:1px solid var(--border);flex-wrap:wrap}
+.foot-copy{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.08em;color:var(--faint)}
+.foot-legal{display:flex;gap:2rem}
+.foot-legal a{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.1em;color:var(--faint);text-transform:uppercase;transition:color 0.2s;cursor:pointer}
+.foot-legal a:hover{color:var(--red)}
+
+/* ─── SCROLL REVEAL ─── */
+.rv{opacity:0;transform:translateY(26px);transition:opacity 0.7s ease,transform 0.7s ease}
+.rv.in{opacity:1;transform:none}
+.rv-l{opacity:0;transform:translateX(-24px);transition:opacity 0.7s ease,transform 0.7s ease}
+.rv-l.in{opacity:1;transform:none}
+.rv-r{opacity:0;transform:translateX(24px);transition:opacity 0.7s ease,transform 0.7s ease}
+.rv-r.in{opacity:1;transform:none}
+.d1{transition-delay:0.1s}.d2{transition-delay:0.2s}.d3{transition-delay:0.3s}
+.d4{transition-delay:0.4s}.d5{transition-delay:0.5s}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--red)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1100px){
+  .why-grid,.method-row{grid-template-columns:1fr 1fr}
+  .why-card:nth-child(2){border-right:none}
+  .method-step:nth-child(2){border-right:none}
+  .method-step:nth-child(3){border-right:1px solid var(--border)}
+  .about-split{grid-template-columns:1fr;gap:4rem}
+  .cta-inner{grid-template-columns:1fr;gap:3rem}
+  .foot-top{grid-template-columns:1fr 1fr;gap:3rem}
+  .trust-inner{grid-template-columns:1fr 1fr;gap:0}
+  .trust-item{padding:2rem;border-bottom:1px solid var(--border)}
+  .svc-body.open{grid-template-columns:1fr}
+  .industries-grid{grid-template-columns:repeat(2,1fr)}
+  .ind-item:nth-child(2n){border-right:none}
+  .ind-item:nth-child(3){border-right:1px solid var(--border)}
+}
+@media(max-width:768px){
+  nav{padding:0 1.5rem}
+  .nav-links,.nav-cta{display:none}
+  .nav-burger{display:flex}
+  .hero{padding:100px 1.5rem 60px}
+  .ir-banner{display:none}
+  .hero-stats{gap:0;flex-wrap:wrap}
+  .stat-item{padding:1.5rem 2rem 0 0;min-width:45%}
+  .wrap{padding:0 1.5rem}
+  .section-pad{padding-top:5rem;padding-bottom:5rem}
+  .page-hero{padding:100px 1.5rem 50px}
+  .svc-header{grid-template-columns:1fr;gap:0.4rem;padding:2rem 1.5rem}
+  .svc-block:hover .svc-header{padding-left:1.5rem}
+  .svc-num{display:none}
+  .svc-body{padding:0 1.5rem 2rem}
+  .svc-body.open{gap:2rem}
+  .why-grid{grid-template-columns:1fr}
+  .why-card{border-right:none;border-bottom:1px solid var(--border)}
+  .why-card:last-child{border-bottom:none}
+  .vals-grid{grid-template-columns:1fr}
+  .val-item{border-right:none}
+  .val-item:nth-child(3){border-bottom:1px solid var(--border)}
+  .method-row{grid-template-columns:1fr}
+  .method-step{border-right:none;border-bottom:1px solid var(--border)}
+  .method-step:last-child{border-bottom:none}
+  .contact-grid,.con-left,.con-right{grid-template-columns:1fr}
+  .con-left{border-right:none;border-bottom:1px solid var(--border)}
+  .con-left,.con-right{padding:3rem 1.5rem}
+  .foot-top{grid-template-columns:1fr;gap:2.5rem;padding:3rem 1.5rem}
+  .foot-bottom{padding:1.5rem;flex-direction:column;align-items:flex-start}
+  .trust-inner{grid-template-columns:1fr;padding:0}
+  .trust-item{padding:1.8rem 1.5rem;border-right:none}
+  .industries-grid{grid-template-columns:1fr}
+  .ind-item{border-right:none}
+  .ind-item:nth-last-child(-n+3){border-bottom:1px solid var(--border)}
+  .ind-item:last-child{border-bottom:none}
+  .cta-inner{padding:5rem 1.5rem}
+  .threat-inner{padding:1.4rem 1.5rem;gap:1.5rem}
+  .threat-items{gap:1.2rem}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="grid-bg"></div>
+<div class="scan-line"></div>
+
+<!-- ════════ NAV ════════ -->
+<nav id="mainNav">
+  <div class="nav-logo" onclick="showPage('home')">
+    <svg class="nav-logo-icon" viewBox="0 0 112 112" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="8" width="96" height="96" rx="20" fill="#C1121F"/>
+      <clipPath id="c1"><rect x="8" y="8" width="96" height="96" rx="20"/></clipPath>
+      <g clip-path="url(#c1)">
+        <path d="M56 17 L89 31 L89 59 C89 78 74 91 56 99 C38 91 23 78 23 59 L23 31 Z" fill="#08090d"/>
+        <rect x="39" y="35" width="11" height="40" fill="#C1121F"/>
+        <rect x="39" y="35" width="24" height="11" rx="1" fill="#C1121F"/>
+        <rect x="52" y="35" width="11" height="22" rx="1" fill="#C1121F"/>
+        <rect x="39" y="46" width="24" height="10" fill="#C1121F"/>
+        <polygon points="50,56 63,56 73,75 61,75" fill="#C1121F"/>
+      </g>
+    </svg>
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">RAKHWAL</span>
+      <span class="nav-logo-sub">Technologies</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a class="nav-link active" id="nav-home" onclick="showPage('home')">Home</a></li>
+    <li><a class="nav-link" id="nav-services" onclick="showPage('services')">Services</a></li>
+    <li><a class="nav-link" id="nav-about" onclick="showPage('about')">About</a></li>
+    <li><a class="nav-link" id="nav-contact" onclick="showPage('contact')">Contact</a></li>
+  </ul>
+  <a class="nav-cta" onclick="showPage('contact')">Request Assessment</a>
+  <div class="nav-burger" id="burger" onclick="toggleMobile()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a class="mobile-link active" onclick="showPage('home');toggleMobile()">Home</a>
+  <a class="mobile-link" onclick="showPage('services');toggleMobile()">Services</a>
+  <a class="mobile-link" onclick="showPage('about');toggleMobile()">About</a>
+  <a class="mobile-link" onclick="showPage('contact');toggleMobile()">Contact</a>
+</div>
+
+<!-- ═══════════════════════════════════════
+     HOME
+═══════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-vline"></div>
+
+    <!-- IR ACTIVE BADGE -->
+    <div class="ir-banner">
+      <div class="ir-dot"></div>
+      <div class="ir-text">SOC Active — <span>24/7 Monitoring Live</span></div>
+    </div>
+
+    <div class="hero-inner">
+      <div class="hero-label">Managed Security Operations · India-Based · Global Clients</div>
+
+      <h1 class="hero-h1">
+        <span class="l1">ATTACKERS</span>
+        <span class="l2">DON'T WAIT.</span>
+        <span class="l3">NEITHER DO WE.</span>
+      </h1>
+
+      <!-- 5-SECOND VALUE READ -->
+      <div class="hero-props">
+        <div class="hero-prop">24/7 SOC staffed by human analysts — no outsourced triage, no automated noise.</div>
+        <div class="hero-prop">1-hour incident response SLA. Pre-contracted team on standby before you need them.</div>
+        <div class="hero-prop">NIST CSF · MITRE ATT&CK · ISO 27001 · SOC 2 aligned — board-ready reporting.</div>
+        <div class="hero-prop">Vendor-neutral. CrowdStrike, Splunk, Okta, Wiz — deployed for your environment, not our margins.</div>
+      </div>
+
+      <div class="hero-actions">
+        <a class="btn-primary" onclick="showPage('contact')">Request a Security Assessment →</a>
+        <a class="btn-outline" onclick="showPage('services')">View Services</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num"><span class="cu" data-t="24">0</span><span>/7</span></div>
+          <div class="stat-lbl">Threat<br/>monitoring</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num"><span class="cu" data-t="1">0</span><span>hr</span></div>
+          <div class="stat-lbl">IR response<br/>SLA</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num"><span class="cu" data-t="5">0</span><span>+</span></div>
+          <div class="stat-lbl">Service<br/>pillars</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">0</div>
+          <div class="stat-lbl">Tolerance<br/>for breaches</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THREAT INTEL BAR -->
+  <div class="threat-bar">
+    <div class="threat-inner">
+      <div class="threat-label"><div class="live-dot"></div>Monitoring Status</div>
+      <div class="threat-items">
+        <div class="threat-item"><strong>Coverage</strong> <span class="threat-sep">|</span> SIEM · EDR · Email · Cloud · Identity</div>
+        <div class="threat-item"><strong>Frameworks</strong> <span class="threat-sep">|</span> NIST CSF · MITRE ATT&CK · CIS v8</div>
+        <div class="threat-item"><strong>Compliance</strong> <span class="threat-sep">|</span> ISO 27001 · SOC 2 · GDPR · DPDPA</div>
+        <div class="threat-item"><strong>Response</strong> <span class="threat-sep">|</span> &lt;1hr SLA · Human-Led Triage</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <div class="t-item"><span class="t-dot"></span>Managed SOC — 24/7 Human Analysts</div>
+      <div class="t-item"><span class="t-dot"></span>Incident Response — 1hr SLA</div>
+      <div class="t-item"><span class="t-dot"></span>Identity &amp; Access Security</div>
+      <div class="t-item"><span class="t-dot"></span>Email &amp; Cloud Security</div>
+      <div class="t-item"><span class="t-dot"></span>vCISO &amp; Compliance Advisory</div>
+      <div class="t-item"><span class="t-dot"></span>SIEM · SOAR · EDR · XDR</div>
+      <div class="t-item"><span class="t-dot"></span>MITRE ATT&CK · NIST CSF · CIS Controls</div>
+      <div class="t-item"><span class="t-dot"></span>ISO 27001 · SOC 2 · PCI-DSS · DPDPA</div>
+      <div class="t-item"><span class="t-dot"></span>Managed SOC — 24/7 Human Analysts</div>
+      <div class="t-item"><span class="t-dot"></span>Incident Response — 1hr SLA</div>
+      <div class="t-item"><span class="t-dot"></span>Identity &amp; Access Security</div>
+      <div class="t-item"><span class="t-dot"></span>Email &amp; Cloud Security</div>
+      <div class="t-item"><span class="t-dot"></span>vCISO &amp; Compliance Advisory</div>
+      <div class="t-item"><span class="t-dot"></span>SIEM · SOAR · EDR · XDR</div>
+      <div class="t-item"><span class="t-dot"></span>MITRE ATT&CK · NIST CSF · CIS Controls</div>
+      <div class="t-item"><span class="t-dot"></span>ISO 27001 · SOC 2 · PCI-DSS · DPDPA</div>
+    </div>
+  </div>
+
+  <!-- WHY RAKHWAL -->
+  <section class="why-section">
+    <div class="wrap section-pad">
+      <div class="eyebrow rv">Competitive Differentiators</div>
+      <h2 class="h2 rv">Why security leaders<br/>choose <span class="red">Rakhwal.</span></h2>
+      <p class="lead rv">Most security vendors sell tools. We sell outcomes — breach prevention, faster recovery, and the audit-ready posture your investors and enterprise clients demand.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card rv d1">
+        <div class="why-tag">01 — HUMAN-LED OPERATIONS</div>
+        <div class="why-title">Every alert. A human decides.</div>
+        <p class="why-body">We don't pipe alerts into a SOAR and call it a SOC. Every escalation is validated by a trained analyst. You get a named contact, not a ticketing system. Our clients don't get breach notifications — they get containment before one happens.</p>
+      </div>
+      <div class="why-card rv d2">
+        <div class="why-tag">02 — VENDOR-NEUTRAL STACK</div>
+        <div class="why-title">We deploy what fits you. Not us.</div>
+        <p class="why-body">No reseller kickbacks. No preferred vendor lock-in. We operate CrowdStrike, SentinelOne, Splunk, Sentinel, Okta, Wiz and more — and recommend based on your environment, budget, and threat surface. Then we manage it so you don't have to.</p>
+      </div>
+      <div class="why-card rv d3">
+        <div class="why-tag">03 — BOARD-READY REPORTING</div>
+        <div class="why-title">One report. Two audiences.</div>
+        <p class="why-body">Every monthly brief has two versions: a technical analysis for your engineering team, and an executive summary your board and investors can act on. Risk posture. Threat trends. Compliance status. No raw logs. No jargon. Just decisions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES PILLARS -->
+  <section style="background:var(--bg)">
+    <div class="wrap section-pad">
+      <div class="eyebrow rv">Service Coverage</div>
+      <h2 class="h2 rv">Five integrated pillars.<br/><span class="red">Full-spectrum coverage.</span></h2>
+      <p class="lead rv">Our services are architecturally interdependent. Each layer feeds intelligence to the next — creating a security posture that improves with every incident, audit, and review.</p>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--border)" class="rv">
+        <div onclick="showPage('services')" style="padding:2.8rem 1.8rem;border-right:1px solid var(--border);cursor:pointer;transition:background 0.3s;position:relative;overflow:hidden" onmouseover="this.style.background='rgba(193,18,31,0.04)';this.querySelector('.pa').style.opacity='1'" onmouseout="this.style.background='transparent';this.querySelector('.pa').style.opacity='0'">
+          <div style="font-family:var(--mono);font-size:0.58rem;color:var(--red);letter-spacing:0.16em;margin-bottom:1rem">01</div>
+          <div style="font-family:var(--display);font-weight:700;font-size:1.3rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--white);margin-bottom:0.5rem;line-height:1.0">Managed SOC</div>
+          <div style="color:var(--body);font-size:0.88rem;line-height:1.75;margin-bottom:1.2rem">24/7 monitoring · SIEM · threat intelligence · analyst triage</div>
+          <div class="pa" style="font-family:var(--mono);font-size:0.6rem;color:var(--red);letter-spacing:0.1em;opacity:0;transition:opacity 0.3s">Explore →</div>
+        </div>
+        <div onclick="showPage('services')" style="padding:2.8rem 1.8rem;border-right:1px solid var(--border);cursor:pointer;transition:background 0.3s;position:relative;overflow:hidden" onmouseover="this.style.background='rgba(193,18,31,0.04)';this.querySelector('.pa').style.opacity='1'" onmouseout="this.style.background='transparent';this.querySelector('.pa').style.opacity='0'">
+          <div style="font-family:var(--mono);font-size:0.58rem;color:var(--red);letter-spacing:0.16em;margin-bottom:1rem">02</div>
+          <div style="font-family:var(--display);font-weight:700;font-size:1.3rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--white);margin-bottom:0.5rem;line-height:1.0">Incident Response</div>
+          <div style="color:var(--body);font-size:0.88rem;line-height:1.75;margin-bottom:1.2rem">1hr SLA · breach containment · forensics · ransomware</div>
+          <div class="pa" style="font-family:var(--mono);font-size:0.6rem;color:var(--red);letter-spacing:0.1em;opacity:0;transition:opacity 0.3s">Explore →</div>
+        </div>
+        <div onclick="showPage('services')" style="padding:2.8rem 1.8rem;border-right:1px solid var(--border);cursor:pointer;transition:background 0.3s;position:relative;overflow:hidden" onmouseover="this.style.background='rgba(193,18,31,0.04)';this.querySelector('.pa').style.opacity='1'" onmouseout="this.style.background='transparent';this.querySelector('.pa').style.opacity='0'">
+          <div style="font-family:var(--mono);font-size:0.58rem;color:var(--red);letter-spacing:0.16em;margin-bottom:1rem">03</div>
+          <div style="font-family:var(--display);font-weight:700;font-size:1.3rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--white);margin-bottom:0.5rem;line-height:1.0">Identity Security</div>
+          <div style="color:var(--body);font-size:0.88rem;line-height:1.75;margin-bottom:1.2rem">IAM · PAM · PIM · MFA · zero trust architecture</div>
+          <div class="pa" style="font-family:var(--mono);font-size:0.6rem;color:var(--red);letter-spacing:0.1em;opacity:0;transition:opacity 0.3s">Explore →</div>
+        </div>
+        <div onclick="showPage('services')" style="padding:2.8rem 1.8rem;border-right:1px solid var(--border);cursor:pointer;transition:background 0.3s;position:relative;overflow:hidden" onmouseover="this.style.background='rgba(193,18,31,0.04)';this.querySelector('.pa').style.opacity='1'" onmouseout="this.style.background='transparent';this.querySelector('.pa').style.opacity='0'">
+          <div style="font-family:var(--mono);font-size:0.58rem;color:var(--red);letter-spacing:0.16em;margin-bottom:1rem">04</div>
+          <div style="font-family:var(--display);font-weight:700;font-size:1.3rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--white);margin-bottom:0.5rem;line-height:1.0">Email &amp; Cloud</div>
+          <div style="color:var(--body);font-size:0.88rem;line-height:1.75;margin-bottom:1.2rem">Anti-phishing · CSPM · DLP · CASB · BEC protection</div>
+          <div class="pa" style="font-family:var(--mono);font-size:0.6rem;color:var(--red);letter-spacing:0.1em;opacity:0;transition:opacity 0.3s">Explore →</div>
+        </div>
+        <div onclick="showPage('services')" style="padding:2.8rem 1.8rem;cursor:pointer;transition:background 0.3s;position:relative;overflow:hidden" onmouseover="this.style.background='rgba(193,18,31,0.04)';this.querySelector('.pa').style.opacity='1'" onmouseout="this.style.background='transparent';this.querySelector('.pa').style.opacity='0'">
+          <div style="font-family:var(--mono);font-size:0.58rem;color:var(--red);letter-spacing:0.16em;margin-bottom:1rem">05</div>
+          <div style="font-family:var(--display);font-weight:700;font-size:1.3rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--white);margin-bottom:0.5rem;line-height:1.0">vCISO Advisory</div>
+          <div style="color:var(--body);font-size:0.88rem;line-height:1.75;margin-bottom:1.2rem">Fractional CISO · SOC 2 · ISO 27001 · risk governance</div>
+          <div class="pa" style="font-family:var(--mono);font-size:0.6rem;color:var(--red);letter-spacing:0.1em;opacity:0;transition:opacity 0.3s">Explore →</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:2.5rem" class="rv">
+        <a class="btn-primary" onclick="showPage('services')">Explore All Services →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRIES SERVED -->
+  <section style="background:var(--bg2);border-top:1px solid var(--border)">
+    <div class="wrap section-pad">
+      <div class="eyebrow rv">Industries We Protect</div>
+      <h2 class="h2 rv">Wherever sensitive data lives,<br/><span class="red">attackers follow.</span></h2>
+      <p class="lead rv">We operate across sectors where a breach isn't a PR problem — it's an existential one. Our controls, reporting, and SLAs are calibrated to each industry's regulatory exposure.</p>
+      <div class="industries-grid rv">
+        <div class="ind-item"><div class="ind-icon">01</div><div class="ind-name">SaaS &amp; Technology</div><div class="ind-detail">SOC 2 Type II · source code protection · customer data compliance</div></div>
+        <div class="ind-item"><div class="ind-icon">02</div><div class="ind-name">Fintech &amp; BFSI</div><div class="ind-detail">PCI-DSS · RBI guidelines · transaction monitoring · fraud infrastructure</div></div>
+        <div class="ind-item"><div class="ind-icon">03</div><div class="ind-name">Healthtech</div><div class="ind-detail">Patient data protection · HIPAA-aligned controls · clinical system hardening</div></div>
+        <div class="ind-item"><div class="ind-icon">04</div><div class="ind-name">Digital Infrastructure</div><div class="ind-detail">OT/IT convergence · uptime SLAs · DDoS mitigation · certificate management</div></div>
+        <div class="ind-item"><div class="ind-icon">05</div><div class="ind-name">E-Commerce &amp; Retail</div><div class="ind-detail">Cardholder data · anti-fraud stack · DPDPA compliance · seasonal surge coverage</div></div>
+        <div class="ind-item"><div class="ind-icon">06</div><div class="ind-name">Enterprise &amp; Scaling Startups</div><div class="ind-detail">Investor-grade security posture · ISO 27001 readiness · vCISO for board reporting</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <div class="trust-strip">
+    <div class="trust-inner rv">
+      <div class="trust-item"><div class="trust-lbl">Frameworks</div><div class="trust-val">NIST CSF · MITRE ATT&CK · CIS v8</div></div>
+      <div class="trust-item"><div class="trust-lbl">Compliance</div><div class="trust-val">ISO 27001 · SOC 2 · GDPR · DPDPA</div></div>
+      <div class="trust-item"><div class="trust-lbl">Cloud Platforms</div><div class="trust-val">AWS · Azure · GCP</div></div>
+      <div class="trust-item"><div class="trust-lbl">Engagement Model</div><div class="trust-val">India-based · Global Clients</div></div>
+    </div>
+  </div>
+
+  <!-- CTA BAND -->
+  <section class="cta-band">
+    <div class="cta-inner rv">
+      <div>
+        <h2 class="cta-h">A breach is expensive.<br/>A <span class="r">retainer is not.</span></h2>
+        <p class="cta-sub">Most IR engagements cost 10–50× what a retainer costs — and that's before regulatory fines, reputational damage, and downtime. Get a scoping call. We'll tell you exactly what your environment needs and what it costs.</p>
+      </div>
+      <div class="cta-btns">
+        <a class="btn-primary" onclick="showPage('contact')">Request a Scoping Call →</a>
+        <a class="btn-red-outline" onclick="showPage('contact')">⚡ Active Incident? Contact Us Now</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-top">
+      <div><div class="foot-name">RAKHWAL</div><div class="foot-sub">Technologies</div><p class="foot-about">Enterprise-grade managed security operations, incident response, and identity security. India-based. Globally trusted.</p></div>
+      <div><div class="foot-col-h">Services</div><ul class="foot-links"><li><a class="foot-link" onclick="showPage('services')">Managed SOC</a></li><li><a class="foot-link" onclick="showPage('services')">Incident Response</a></li><li><a class="foot-link" onclick="showPage('services')">Identity Security</a></li><li><a class="foot-link" onclick="showPage('services')">Email &amp; Cloud</a></li><li><a class="foot-link" onclick="showPage('services')">vCISO Advisory</a></li></ul></div>
+      <div><div class="foot-col-h">Company</div><ul class="foot-links"><li><a class="foot-link" onclick="showPage('about')">About Us</a></li><li><a class="foot-link" onclick="showPage('contact')">Contact</a></li></ul></div>
+      <div><div class="foot-col-h">Contact</div><ul class="foot-links"><li><a class="foot-link" href="mailto:info@rakhwal.com">info@rakhwal.com</a></li><li><span class="foot-link" style="cursor:default;pointer-events:none">India · Global</span></li></ul></div>
+    </div>
+    <div class="foot-bottom"><div class="foot-copy">© 2025 Rakhwal Technologies Pvt. Ltd. All rights reserved.</div><div class="foot-legal"><a onclick="showPage('contact')">Privacy Policy</a><a onclick="showPage('contact')">Responsible Disclosure</a></div></div>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SERVICES
+═══════════════════════════════════════ -->
+<div class="page" id="page-services">
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="eyebrow">Services</div>
+      <h1 style="font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(3rem,6vw,5rem);letter-spacing:0.04em;color:var(--white);line-height:0.95;margin-bottom:1.5rem">Five integrated pillars.<br/><span style="color:var(--red)">Zero coverage gaps.</span></h1>
+      <p style="color:var(--body);font-size:1.05rem;max-width:580px;line-height:1.9">Each service is designed to interlock with the others. SOC telemetry feeds Identity reviews. IR playbooks inform Cloud posture. vCISO strategy aligns everything to your compliance obligations.</p>
+    </div>
+  </section>
+
+  <div style="background:var(--bg)">
+
+    <div class="svc-block">
+      <div class="svc-header" onclick="toggleSvc('s1')">
+        <div class="svc-num">01</div>
+        <div><div class="svc-name">Managed Security Operations</div><div class="svc-tag">SOC-as-a-Service — 24/7 human-led threat monitoring, detection and response</div></div>
+        <div class="svc-toggle" id="toggle-s1">EXPAND +</div>
+      </div>
+      <div class="svc-body" id="body-s1">
+        <div>
+          <div class="sla-badge">⏱ Response SLA: Alert triage &lt;15 min · Escalation &lt;30 min · IR kickoff &lt;1hr</div>
+          <p class="svc-desc">Your dedicated Security Operations Centre — without the £1M headcount. We ingest, correlate and triage your environment around the clock. Every alert is reviewed by a trained analyst before it reaches you. No false-positive fatigue. No 3am pages for benign activity. Real threats get real responses — fast.</p>
+          <div class="dl-label">What You Receive</div>
+          <ul class="dl-list">
+            <li>24/7 analyst-led alert triage and escalation</li>
+            <li>SIEM deployment, tuning and rule management (Splunk / Microsoft Sentinel)</li>
+            <li>SOAR playbook automation for confirmed attack patterns</li>
+            <li>Threat intelligence integration — commercial feeds + MISP IOC management</li>
+            <li>Monthly executive threat landscape report + technical deep-dive</li>
+            <li>Vulnerability scan scheduling and risk register maintenance</li>
+          </ul>
+        </div>
+        <div>
+          <div class="tools-panel">
+            <div class="chips"><span class="chip">Splunk</span><span class="chip">Microsoft Sentinel</span><span class="chip">CrowdStrike</span><span class="chip">SentinelOne</span><span class="chip">Cortex XSOAR</span><span class="chip">Tenable</span><span class="chip">Qualys</span><span class="chip">Darktrace</span><span class="chip">Recorded Future</span><span class="chip">MISP</span></div>
+            <div class="eng-type">Engagement: <strong>Monthly retainer · Minimum 3 months</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-block">
+      <div class="svc-header" onclick="toggleSvc('s2')">
+        <div class="svc-num">02</div>
+        <div><div class="svc-name">Incident Response</div><div class="svc-tag">IR-as-a-Service — retainer, breach containment, digital forensics, ransomware recovery</div></div>
+        <div class="svc-toggle" id="toggle-s2">EXPAND +</div>
+      </div>
+      <div class="svc-body" id="body-s2">
+        <div>
+          <div class="sla-badge">⏱ IR SLA: Initial response &lt;1hr · Containment decision &lt;4hrs · Forensic report &lt;72hrs</div>
+          <p class="svc-desc">When a breach happens, the first hour determines the final cost. Rakhwal's IR retainer puts a pre-contracted team on standby before you need them — with documented authorisations, pre-staged tooling, and zero ramp-up time. We've seen what ad-hoc IR looks like. It's not fast enough.</p>
+          <div class="dl-label">What You Receive</div>
+          <ul class="dl-list">
+            <li>Defined IR SLA — sub-1-hour response, 24/7/365</li>
+            <li>Breach containment, network isolation and lateral movement blocking</li>
+            <li>Digital forensics with evidence chain-of-custody documentation</li>
+            <li>Malware reverse engineering and behavioural analysis</li>
+            <li>Ransomware negotiation support and recovery coordination</li>
+            <li>Post-incident root cause analysis and board-ready report</li>
+            <li>IR playbook development and quarterly tabletop exercises</li>
+          </ul>
+        </div>
+        <div>
+          <div class="tools-panel">
+            <div class="chips"><span class="chip">Velociraptor</span><span class="chip">Volatility</span><span class="chip">CrowdStrike Falcon</span><span class="chip">Autopsy</span><span class="chip">TheHive</span><span class="chip">Wireshark</span><span class="chip">Cortex XSOAR</span><span class="chip">Cuckoo Sandbox</span></div>
+            <div class="eng-type">Engagement: <strong>Annual retainer + on-demand callout</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-block">
+      <div class="svc-header" onclick="toggleSvc('s3')">
+        <div class="svc-num">03</div>
+        <div><div class="svc-name">Identity &amp; Access Security</div><div class="svc-tag">IAM · PAM · PIM · MFA · Zero Trust — 80% of breaches start here</div></div>
+        <div class="svc-toggle" id="toggle-s3">EXPAND +</div>
+      </div>
+      <div class="svc-body" id="body-s3">
+        <div>
+          <p class="svc-desc">Verizon's 2024 DBIR puts compromised credentials at the root of over 80% of breaches. Your perimeter is your identity layer — and most organisations have over-provisioned, under-audited access that an attacker can move laterally through for weeks before detection. We fix that architecture, then continuously audit it.</p>
+          <div class="dl-label">What You Receive</div>
+          <ul class="dl-list">
+            <li>IAM architecture design and deployment (Okta / Microsoft Entra ID)</li>
+            <li>SSO rollout and MFA enforcement across all applications</li>
+            <li>Privileged Access Management — CyberArk or BeyondTrust</li>
+            <li>PIM configuration with just-in-time access and approval workflows</li>
+            <li>Zero Trust Network Access (ZTNA) architecture and policy enforcement</li>
+            <li>Quarterly privilege audit and access certification reporting</li>
+          </ul>
+        </div>
+        <div>
+          <div class="tools-panel">
+            <div class="chips"><span class="chip">Okta</span><span class="chip">Microsoft Entra ID</span><span class="chip">CyberArk</span><span class="chip">BeyondTrust</span><span class="chip">Azure PIM</span><span class="chip">SailPoint</span><span class="chip">Duo Security</span><span class="chip">Ping Identity</span><span class="chip">Zscaler ZTNA</span></div>
+            <div class="eng-type">Engagement: <strong>Project implementation + managed quarterly audit</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-block">
+      <div class="svc-header" onclick="toggleSvc('s4')">
+        <div class="svc-num">04</div>
+        <div><div class="svc-name">Email &amp; Cloud Security</div><div class="svc-tag">Anti-phishing · CSPM · DLP · CASB — the two vectors that cause the most breaches</div></div>
+        <div class="svc-toggle" id="toggle-s4">EXPAND +</div>
+      </div>
+      <div class="svc-body" id="body-s4">
+        <div>
+          <p class="svc-desc">Phishing delivers 90% of ransomware payloads. Cloud misconfiguration exposed 80% of the most significant data breaches of the past three years. These aren't edge cases — they're the primary attack surface. We secure both with enterprise tooling, continuous posture monitoring, and policy enforcement that scales with your environment.</p>
+          <div class="dl-label">What You Receive</div>
+          <ul class="dl-list">
+            <li>Email security gateway with advanced anti-phishing and BEC protection</li>
+            <li>DMARC, DKIM, SPF deployment and enforcement monitoring</li>
+            <li>Cloud Security Posture Management (CSPM) — AWS, Azure, GCP</li>
+            <li>Data Loss Prevention (DLP) policy design and enforcement</li>
+            <li>CASB deployment for SaaS visibility, access control and shadow IT</li>
+            <li>Monthly cloud misconfiguration report with prioritised remediation</li>
+          </ul>
+        </div>
+        <div>
+          <div class="tools-panel">
+            <div class="chips"><span class="chip">Proofpoint</span><span class="chip">Mimecast</span><span class="chip">Wiz</span><span class="chip">Orca Security</span><span class="chip">Lacework</span><span class="chip">Netskope</span><span class="chip">McAfee MVISION</span><span class="chip">AppOmni</span><span class="chip">Forcepoint DLP</span><span class="chip">Varonis</span></div>
+            <div class="eng-type">Engagement: <strong>Setup + ongoing managed service</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-block" style="border-bottom:none">
+      <div class="svc-header" onclick="toggleSvc('s5')">
+        <div class="svc-num">05</div>
+        <div><div class="svc-name">vCISO &amp; Compliance Advisory</div><div class="svc-tag">Fractional CISO · SOC 2 · ISO 27001 · Risk Management · Board Reporting</div></div>
+        <div class="svc-toggle" id="toggle-s5">EXPAND +</div>
+      </div>
+      <div class="svc-body" id="body-s5">
+        <div>
+          <p class="svc-desc">A full-time CISO costs ₹1–3Cr annually before tooling and team. A Rakhwal vCISO gives you the same strategic depth at a fraction of the cost — embedded into your board meetings, investor conversations, and compliance programmes. We've run SOC 2 and ISO 27001 programmes before. We know exactly where the gaps are.</p>
+          <div class="dl-label">What You Receive</div>
+          <ul class="dl-list">
+            <li>Fractional CISO — monthly strategy sessions + on-call advisory</li>
+            <li>SOC 2 Type II readiness programme and auditor liaison</li>
+            <li>ISO 27001 gap analysis, ISMS implementation and certification roadmap</li>
+            <li>Security policy library — AUP, IR policy, data handling, access control</li>
+            <li>Risk register creation, scoring, and quarterly board-level review</li>
+            <li>Third-party and vendor risk assessment framework</li>
+            <li>Investor security questionnaire preparation and due diligence support</li>
+          </ul>
+        </div>
+        <div>
+          <div class="tools-panel">
+            <div class="chips"><span class="chip">NIST CSF</span><span class="chip">ISO 27001:2022</span><span class="chip">SOC 2 Type II</span><span class="chip">CIS Controls v8</span><span class="chip">MITRE ATT&CK</span><span class="chip">DPDPA 2023</span><span class="chip">GDPR</span><span class="chip">PCI-DSS v4</span></div>
+            <div class="eng-type">Engagement: <strong>Monthly advisory retainer</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <section style="background:var(--bg2);border-top:1px solid var(--border)">
+    <div class="wrap section-pad" style="text-align:center">
+      <h2 class="h2 rv" style="font-size:clamp(2rem,4vw,3rem)">Not sure where to start?<br/><span class="red">We'll tell you exactly what you need.</span></h2>
+      <p class="rv" style="color:var(--body);font-size:1.02rem;max-width:480px;margin:0 auto 2.5rem;line-height:1.9">Send us a description of your environment and your biggest concern. We'll respond within one business day with a clear recommendation — no sales call required.</p>
+      <a class="btn-primary rv" onclick="showPage('contact')">Email info@rakhwal.com →</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-top">
+      <div><div class="foot-name">RAKHWAL</div><div class="foot-sub">Technologies</div><p class="foot-about">Enterprise-grade managed security operations and incident response. India-based. Globally trusted.</p></div>
+      <div><div class="foot-col-h">Services</div><ul class="foot-links"><li><a class="foot-link" onclick="showPage('services')">Managed SOC</a></li><li><a class="foot-link" onclick="showPage('services')">Incident Response</a></li><li><a class="foot-link" onclick="showPage('services')">Identity Security</a></li><li><a class="foot-link" onclick="showPage('services')">Email &amp; Cloud</a></li><li><a class="foot-link" onclick="showPage('services')">vCISO Advisory</a></li></ul></div>
+      <div><div class="foot-col-h">Company</div><ul class="foot-links"><li><a class="foot-link" onclick="showPage('about')">About</a></li><li><a class="foot-link" onclick="showPage('contact')">Contact</a></li></ul></div>
+      <div><div class="foot-col-h">Contact</div><ul class="foot-links"><li><a class="foot-link" href="mailto:info@rakhwal.com">info@rakhwal.com</a></li></ul></div>
+    </div>
+    <div class="foot-bottom"><div class="foot-copy">© 2025 Rakhwal Technologies. All rights reserved.</div><div class="foot-legal"><a>Privacy Policy</a><a onclick="showPage('contact')">Disclosure</a></div></div>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════════
+     ABOUT
+═══════════════════════════════════════ -->
+<div class="page" id="page-about">
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="eyebrow">About Rakhwal</div>
+      <h1 style="font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(3rem,6vw,5rem);letter-spacing:0.04em;color:var(--white);line-height:0.95;margin-bottom:1.5rem">Built to protect<br/><span style="color:var(--red)">the builders.</span></h1>
+      <p style="color:var(--body);font-size:1.05rem;max-width:580px;line-height:1.9">We exist because the companies that most need enterprise security are the ones enterprise security firms ignore.</p>
+    </div>
+  </section>
+
+  <section style="background:var(--bg2);border-bottom:1px solid var(--border)">
+    <div class="wrap section-pad">
+      <div class="about-split">
+        <div class="about-big rv-l">The gap<br/>between<br/>"secure"<br/>and <span class="r">safe.</span></div>
+        <div class="about-copy rv-r">
+          <p>Enterprise security firms build products and processes for companies with 10,000 employees and dedicated security departments. Freelance consultants lack the operational depth and reporting rigour that investors, regulators, and enterprise clients demand. Automated tools produce tens of thousands of alerts and call it a SOC.</p>
+          <p>Rakhwal was founded to close that gap — specifically for the companies that sit between startup chaos and enterprise structure. SaaS companies approaching Series B. Fintechs under RBI scrutiny. Healthtech platforms handling millions of patient records. Digital infrastructure companies where downtime costs six figures an hour.</p>
+          <p>We operate as a senior security team embedded in your organisation. Not a vendor. Not a dashboard. A team with your escalation number, your architecture diagrams, and a clear mandate: don't let them in. And if they get in, stop them fast.</p>
+          <p>India-based. Globally trusted. Fluent in the frameworks your auditors, investors, and enterprise clients require.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--bg3)">
+    <div class="wrap section-pad">
+      <div class="eyebrow rv">Operating Principles</div>
+      <h2 class="h2 rv">What we believe.<br/><span class="red">How we operate.</span></h2>
+    </div>
+    <div class="vals-grid">
+      <div class="val-item rv d1"><div class="val-tag">01 — TRANSPARENCY</div><div class="val-title">Full findings. No upsells.</div><p class="val-body">Every finding is reported with evidence, CVSS scoring, and a clear remediation path. We don't overstate risk to justify fees and we don't withhold critical findings to create expansion opportunities. If you're exposed, you hear it from us first — with a remediation plan, not a sales proposal.</p></div>
+      <div class="val-item rv d2"><div class="val-tag">02 — ANALYST-FIRST</div><div class="val-title">Automation scales. Humans decide.</div><p class="val-body">We use SOAR, ML-based detection, and threat intelligence feeds to process volume. But every escalation is reviewed by a trained analyst before it reaches you. We will never tell you your environment is clean because an algorithm said so. Human judgment is the product.</p></div>
+      <div class="val-item rv d3"><div class="val-tag">03 — ETHICS WITHOUT EXCEPTIONS</div><div class="val-title">Authorised. Scoped. Documented.</div><p class="val-body">Every engagement is conducted under written authorisation with explicit rules of engagement, defined scope, and a signed statement of work. We run a formal responsible disclosure programme. We report everything we find — including the uncomfortable parts. There are no exceptions to this policy.</p></div>
+      <div class="val-item rv d4"><div class="val-tag">04 — GENUINE PARTNERSHIP</div><div class="val-title">We tell you what you need. Not what we sell.</div><p class="val-body">If a tool isn't right for your stack, we say so — even if we operate it. If a finding is genuinely low-risk, we won't inflate its CVSS score to justify billable hours. If you're ready to manage something in-house, we'll help you build that capability. Trust is the only service worth selling.</p></div>
+    </div>
+  </section>
+
+  <section style="background:var(--bg)">
+    <div class="wrap section-pad">
+      <div class="eyebrow rv">Engagement Methodology</div>
+      <h2 class="h2 rv">The same rigorous process.<br/><span class="red">Every engagement.</span></h2>
+      <p class="lead rv">Security theatre looks like process. Real security operations are defined by consistent methodology — documented, repeatable, and independently verifiable.</p>
+    </div>
+    <div class="method-row">
+      <div class="method-step rv d1"><div class="m-num">01</div><div class="m-name">Scoping</div><p class="m-desc">Environment mapping, asset inventory, rules of engagement, and written authorisation. Nothing starts without it.</p></div>
+      <div class="method-step rv d2"><div class="m-num">02</div><div class="m-name">Assessment</div><p class="m-desc">Framework-aligned analysis against NIST CSF, CIS Controls v8, and MITRE ATT&CK. Gap analysis versus your stated compliance obligations.</p></div>
+      <div class="method-step rv d3"><div class="m-num">03</div><div class="m-name">Detection</div><p class="m-desc">Continuous monitoring, correlation, and analyst-validated triage. Severity classification by business impact, not just technical score.</p></div>
+      <div class="method-step rv d4"><div class="m-num">04</div><div class="m-name">Response</div><p class="m-desc">Contained, investigated, eradicated. Every action logged with timestamps and forensic integrity for post-incident review and legal chain of custody.</p></div>
+      <div class="method-step rv d5"><div class="m-num">05</div><div class="m-name">Reporting</div><p class="m-desc">Board-ready executive summary plus full technical findings. Remediation prioritised by business risk. Verification cycle included.</p></div>
+    </div>
+  </section>
+
+  <section style="background:var(--bg2);border-top:1px solid var(--border)">
+    <div class="wrap section-pad-sm">
+      <div class="eyebrow rv">Frameworks &amp; Standards</div>
+      <h2 class="h2 rv" style="font-size:clamp(1.8rem,3vw,2.8rem)">We speak the language<br/><span class="red">your auditors expect.</span></h2>
+      <p style="color:var(--body);font-size:1rem;max-width:500px;line-height:1.9;margin-bottom:0" class="rv">Our methodology aligns to internationally recognised security frameworks — ensuring your security programme is independently verifiable by auditors, investors, and enterprise clients.</p>
+      <div class="fw-row rv"><span class="fw-chip">NIST CSF 2.0</span><span class="fw-chip">MITRE ATT&CK v14</span><span class="fw-chip">CIS Controls v8</span><span class="fw-chip">ISO/IEC 27001:2022</span><span class="fw-chip">SOC 2 Type II</span><span class="fw-chip">OWASP Top 10</span><span class="fw-chip">OWASP API Security</span><span class="fw-chip">PCI-DSS v4</span><span class="fw-chip">DPDPA 2023</span><span class="fw-chip">GDPR</span><span class="fw-chip">PTES</span><span class="fw-chip">SANS Top 20</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-top">
+      <div><div class="foot-name">RAKHWAL</div><div class="foot-sub">Technologies</div><p class="foot-about">Enterprise-grade managed security operations and incident response. India-based. Globally trusted.</p></div>
+      <div><div class="foot-col-h">Services</div><ul class="foot-links"><li><a class="foot-link" onclick="showPage('services')">Managed SOC</a></li><li><a class="foot-link" onclick="showPage('services')">Incident Response</a></li><li><a class="foot-link" onclick="showPage('services')">Identity Security</a></li><li><a class="foot-link" onclick="showPage('services')">Email &amp; Cloud</a></li><li><a class="foot-link" onclick="showPage('services')">vCISO Advisory</a></li></ul></div>
+      <div><div class="foot-col-h">Company</div><ul class="foot-links"><li><a class="foot-link" onclick="showPage('about')">About</a></li><li><a class="foot-link" onclick="showPage('contact')">Contact</a></li></ul></div>
+      <div><div class="foot-col-h">Contact</div><ul class="foot-links"><li><a class="foot-link" href="mailto:info@rakhwal.com">info@rakhwal.com</a></li></ul></div>
+    </div>
+    <div class="foot-bottom"><div class="foot-copy">© 2025 Rakhwal Technologies. All rights reserved.</div><div class="foot-legal"><a>Privacy Policy</a><a onclick="showPage('contact')">Disclosure</a></div></div>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════════
+     CONTACT
+═══════════════════════════════════════ -->
+<div class="page" id="page-contact">
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="eyebrow">Contact</div>
+      <h1 style="font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(3rem,6vw,5rem);letter-spacing:0.04em;color:var(--white);line-height:0.95;margin-bottom:1.5rem">Reach us.<br/><span style="color:var(--red)">Confidentially.</span></h1>
+      <p style="color:var(--body);font-size:1.05rem;max-width:560px;line-height:1.9">Responses within one business day. NDA available before any technical discussion. Active incident? Mention it — we'll expedite.</p>
+    </div>
+  </section>
+
+  <section style="background:var(--bg2);border-top:1px solid var(--border)">
+    <div class="contact-grid">
+      <div class="con-left">
+        <div class="eyebrow">Direct Contact</div>
+        <h2 style="font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:2.2rem;letter-spacing:0.04em;color:var(--white);line-height:1.0;margin-bottom:1.2rem">One address.<br/>Always monitored.</h2>
+        <p style="color:var(--body);font-size:0.98rem;line-height:1.9;max-width:400px">All enquiries handled via email to protect client confidentiality. No phone directory. No cold call intake. Consultations conducted through encrypted channels — NDA executed before any technical disclosure.</p>
+
+        <div class="email-block">
+          <div class="email-lbl">Primary contact</div>
+          <a href="mailto:info@rakhwal.com" class="email-addr">info@rakhwal.com</a>
+          <p class="email-note">All correspondence is strictly confidential. Expected response: 1 business day.<br/>Active incident? State it in your subject line.</p>
+        </div>
+
+        <div class="con-details">
+          <div class="con-row"><div class="con-key">Location</div><div class="con-val">India — serving clients globally</div></div>
+          <div class="con-row"><div class="con-key">Response</div><div class="con-val">Within 1 business day. Active incidents expedited.</div></div>
+          <div class="con-row"><div class="con-key">IR Clients</div><div class="con-val">Use your dedicated escalation channel provided at onboarding. Do not use email for active incidents.</div></div>
+          <div class="con-row"><div class="con-key">NDA</div><div class="con-val">Available on request before any technical or strategic discussion — no friction.</div></div>
+          <div class="con-row"><div class="con-key">Disclosure</div><div class="con-val">Security research and responsible disclosure: <a href="mailto:info@rakhwal.com" style="color:var(--red)">info@rakhwal.com</a> with subject [DISCLOSURE]</div></div>
+        </div>
+      </div>
+
+      <div class="con-right">
+        <div class="eng-title">How we engage.</div>
+        <div class="eng-steps">
+          <div class="eng-step"><div class="eng-n">01</div><div><div class="eng-sname">Initial Enquiry</div><p class="eng-desc">Email info@rakhwal.com. Include company name, the service you're exploring, and a brief description of your environment or concern. Two sentences is fine.</p></div></div>
+          <div class="eng-step"><div class="eng-n">02</div><div><div class="eng-sname">Scoping Consultation</div><p class="eng-desc">We respond with a structured set of scoping questions or schedule a call. NDA executed if required. We ask precise questions — we don't run discovery fishing expeditions.</p></div></div>
+          <div class="eng-step"><div class="eng-n">03</div><div><div class="eng-sname">Written Proposal</div><p class="eng-desc">Defined scope, deliverables, SLAs, timeline and pricing. No ambiguity. No line items that expand post-signature. No minimum retainer pressure.</p></div></div>
+          <div class="eng-step"><div class="eng-n">04</div><div><div class="eng-sname">Engagement Begins</div><p class="eng-desc">Authorisation documentation executed. Named point of contact assigned. Kick-off within agreed timeline. You have a direct line from day one.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--bg3);border-top:1px solid var(--border)">
+    <div class="wrap section-pad-sm">
+      <div class="eyebrow rv">Responsible Disclosure</div>
+      <div class="disc-box rv">
+        <p>Rakhwal Technologies supports the global security research community. If you have identified a potential vulnerability in our systems or have discovered a security issue you wish to disclose responsibly, we welcome your report.</p>
+        <p>Email <a href="mailto:info@rakhwal.com" style="color:var(--red)">info@rakhwal.com</a> with subject <span style="font-family:var(--mono);color:var(--white);font-size:0.82rem">[DISCLOSURE]</span>. Include full technical details, reproduction steps, proof-of-concept where applicable, and your recommended remediation.</p>
+        <p>Our commitments: Acknowledgement within 48 hours. Triage and substantive response within 5 business days. Coordinated disclosure timeline agreed with researcher. No legal action against researchers operating in good faith under this policy.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-top">
+      <div><div class="foot-name">RAKHWAL</div><div class="foot-sub">Technologies</div><p class="foot-about">Enterprise-grade managed security operations and incident response. India-based. Globally trusted.</p></div>
+      <div><div class="foot-col-h">Services</div><ul class="foot-links"><li><a class="foot-link" onclick="showPage('services')">Managed SOC</a></li><li><a class="foot-link" onclick="showPage('services')">Incident Response</a></li><li><a class="foot-link" onclick="showPage('services')">Identity Security</a></li><li><a class="foot-link" onclick="showPage('services')">Email &amp; Cloud</a></li><li><a class="foot-link" onclick="showPage('services')">vCISO Advisory</a></li></ul></div>
+      <div><div class="foot-col-h">Company</div><ul class="foot-links"><li><a class="foot-link" onclick="showPage('about')">About</a></li><li><a class="foot-link" onclick="showPage('contact')">Contact</a></li></ul></div>
+      <div><div class="foot-col-h">Contact</div><ul class="foot-links"><li><a class="foot-link" href="mailto:info@rakhwal.com">info@rakhwal.com</a></li></ul></div>
+    </div>
+    <div class="foot-bottom"><div class="foot-copy">© 2025 Rakhwal Technologies. All rights reserved.</div><div class="foot-legal"><a>Privacy Policy</a><a>Responsible Disclosure</a></div></div>
+  </footer>
+</div>
+
+<script>
+// ── PAGE NAV ──
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-link,.mobile-link').forEach(l=>l.classList.remove('active'));
+  const pg=document.getElementById('page-'+id);
+  if(pg){pg.classList.add('active');window.scrollTo({top:0,behavior:'instant'})}
+  const nl=document.getElementById('nav-'+id);
+  if(nl)nl.classList.add('active');
+  document.querySelectorAll('.mobile-link').forEach(l=>{if(l.textContent.trim().toLowerCase()===id||(id==='home'&&l.textContent.trim()==='Home'))l.classList.add('active')});
+  setTimeout(()=>{initReveal();runCounters()},80);
+}
+
+// ── MOBILE ──
+function toggleMobile(){document.getElementById('mobileMenu').classList.toggle('open')}
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>40);
+});
+
+// ── SERVICE ACCORDION ──
+function toggleSvc(id){
+  const body=document.getElementById('body-'+id);
+  const toggle=document.getElementById('toggle-'+id);
+  const block=body.closest('.svc-block');
+  const isOpen=body.classList.contains('open');
+  document.querySelectorAll('.svc-body').forEach(b=>b.classList.remove('open'));
+  document.querySelectorAll('.svc-toggle').forEach(t=>{t.classList.remove('open');t.textContent='EXPAND +'});
+  document.querySelectorAll('.svc-block').forEach(b=>b.classList.remove('open'));
+  if(!isOpen){
+    body.classList.add('open');
+    toggle.classList.add('open');
+    toggle.textContent='COLLAPSE −';
+    block.classList.add('open');
+    setTimeout(()=>{block.scrollIntoView({behavior:'smooth',block:'nearest'})},60);
+  }
+}
+
+// ── REVEAL ──
+function initReveal(){
+  ['rv','rv-l','rv-r'].forEach(cls=>{
+    document.querySelectorAll('.page.active .'+cls+':not(.in)').forEach(el=>{
+      new IntersectionObserver((entries,obs)=>{
+        entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}});
+      },{threshold:0.1,rootMargin:'0px 0px -40px 0px'}).observe(el);
+    });
+  });
+}
+
+// ── COUNTERS ──
+function runCounters(){
+  document.querySelectorAll('.page.active .cu').forEach(el=>{
+    const target=parseInt(el.dataset.t);
+    let n=0;
+    const step=Math.ceil(target/18);
+    const iv=setInterval(()=>{n=Math.min(n+step,target);el.textContent=n;if(n>=target)clearInterval(iv)},55);
+  });
+}
+
+// ── CURSOR GLOW ──
+const glow=document.getElementById('cursorGlow');
+let gx=0,gy=0,cx=0,cy=0;
+document.addEventListener('mousemove',e=>{gx=e.clientX;gy=e.clientY;glow.style.opacity='1'});
+document.addEventListener('mouseleave',()=>glow.style.opacity='0');
+function animGlow(){
+  cx+=(gx-cx)*0.08;cy+=(gy-cy)*0.08;
+  glow.style.left=cx+'px';glow.style.top=cy+'px';
+  requestAnimationFrame(animGlow);
+}
+animGlow();
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded',()=>{initReveal();runCounters()});
+</script>
+</body>
+</html>
